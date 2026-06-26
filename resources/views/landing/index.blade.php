@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MakanKuy - Pesan makanan dan minuman favorit Anda dengan mudah dan cepat">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>MakanKuy - Pesan Makanan Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -105,6 +107,12 @@
             color: #aaa;
         }
 
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         .navbar-cart {
             position: relative;
             width: 42px;
@@ -119,12 +127,30 @@
             transition: all 0.2s;
             text-decoration: none;
             border: 1px solid #e8e8e8;
+            font-family: 'Inter', sans-serif;
         }
 
         .navbar-cart:hover {
             background: #fff3ee;
             color: #ff6b35;
             border-color: #ffd0b5;
+        }
+
+        .admin-link {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e2330;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .admin-link:hover {
+            background: #ff6b35;
         }
 
         /* ===== HERO SECTION ===== */
@@ -536,6 +562,58 @@
             gap: 14px;
         }
 
+        .delivery-map-select {
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            border-radius: 14px;
+            background: #f8f9fa;
+        }
+
+        #deliveryMap {
+            width: 100%;
+            height: 220px;
+            background: #eef1f4;
+        }
+
+        .delivery-map-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 12px;
+        }
+
+        .delivery-map-footer span {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .delivery-map-hint {
+            display: block;
+            margin-top: 6px;
+            color: #888;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .location-btn {
+            flex: 0 0 auto;
+            border: 1px solid #ffd0b5;
+            border-radius: 10px;
+            padding: 8px 10px;
+            background: #fff;
+            color: #ff6b35;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 650;
+            transition: all 0.2s;
+        }
+
+        .location-btn:hover {
+            background: #fff3ee;
+        }
+
         .order-total {
             display: flex;
             align-items: center;
@@ -570,6 +648,124 @@
         .order-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        /* ===== STATUS MODAL ===== */
+        .status-modal .order-modal-dialog {
+            width: min(100%, 640px);
+        }
+
+        .status-modal h2 {
+            font-size: 22px;
+            color: #1e2330;
+            margin-bottom: 6px;
+        }
+
+        .status-modal-intro {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .status-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 18px;
+        }
+
+        .status-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .status-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .status-form input:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .status-submit {
+            height: 44px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 12px;
+            background: #1e2330;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .status-results {
+            display: grid;
+            gap: 12px;
+        }
+
+        .status-empty {
+            padding: 18px;
+            border-radius: 14px;
+            background: #f8f9fa;
+            color: #777;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .status-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 14px;
+            padding: 16px;
+            background: #fff;
+        }
+
+        .status-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .status-code {
+            font-weight: 800;
+            color: #1e2330;
+        }
+
+        .status-badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 750;
+            text-transform: capitalize;
+            background: #f8f9fa;
+            color: #555;
+        }
+
+        .status-badge.menunggu { background: #fff8e1; color: #a06200; }
+        .status-badge.diproses { background: #e3f2fd; color: #1565c0; }
+        .status-badge.selesai { background: #e8f5e9; color: #2e7d32; }
+        .status-badge.dibatalkan { background: #ffebee; color: #c62828; }
+
+        .status-card p {
+            margin: 4px 0;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         /* ===== CONTACT SECTION ===== */
@@ -719,6 +915,8 @@
             .hero h1 { font-size: 28px; }
             .hero-card { padding: 32px 28px; }
             .navbar-search { margin: 0 16px; max-width: 300px; }
+            .status-form { grid-template-columns: 1fr; }
+            .status-submit { width: 100%; }
         }
 
         @media (max-width: 480px) {
@@ -733,6 +931,13 @@
             }
             .order-modal-dialog {
                 padding: 20px;
+            }
+            .delivery-map-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+            .location-btn {
+                width: 100%;
             }
         }
     </style>
@@ -763,12 +968,14 @@
                 <i class="fas fa-search"></i>
                 <input type="text" placeholder="Cari makanan atau minuman..." id="searchMenu">
             </div>
-            <a href="#" class="navbar-cart">
-                <i class="fas fa-shopping-cart"></i>
-            </a>
-            <a href="{{ route('admin.dashboard') }}" class="admin-link" title="Admin Panel">
-                <i class="fas fa-user-shield"></i>
-            </a>
+            <div class="navbar-actions">
+                <button type="button" class="navbar-cart" id="openStatusModal" title="Cek status pesanan">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                <a href="{{ route('admin.dashboard') }}" class="admin-link" title="Admin Panel">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -890,6 +1097,22 @@
                     <textarea name="alamat_pengiriman" id="alamat_pengiriman" placeholder="Tulis alamat lengkap Anda" required>{{ old('alamat_pengiriman') }}</textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="deliveryMap">Lokasi Antaran</label>
+                    <div class="delivery-map-select">
+                        <div id="deliveryMap"></div>
+                        <div class="delivery-map-footer">
+                            <span id="deliveryLocationText">Belum ada titik lokasi yang dipilih.</span>
+                            <button type="button" class="location-btn" id="useCurrentLocation">
+                                <i class="fas fa-location-crosshairs"></i> Lokasi Saya
+                            </button>
+                        </div>
+                    </div>
+                    <small class="delivery-map-hint">Klik titik di map atau gunakan lokasi Anda agar kurir lebih mudah menemukan alamat.</small>
+                    <input type="hidden" name="latitude" id="deliveryLatitude" value="{{ old('latitude') }}">
+                    <input type="hidden" name="longitude" id="deliveryLongitude" value="{{ old('longitude') }}">
+                </div>
+
                 <div class="order-form-row">
                     <div class="form-group">
                         <label for="jumlah">Jumlah</label>
@@ -914,6 +1137,37 @@
                     <i class="fas fa-bag-shopping"></i> Buat Pesanan
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Status Modal -->
+    <div class="order-modal status-modal" id="statusModal" aria-hidden="true">
+        <div class="order-modal-backdrop" data-close-status></div>
+        <div class="order-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle">
+            <button type="button" class="order-modal-close" data-close-status aria-label="Tutup popup status">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h2 id="statusModalTitle">Status Pesanan</h2>
+            <p class="status-modal-intro">Masukkan nomor HP yang dipakai saat memesan untuk melihat progres pesanan terbaru.</p>
+
+            <form class="status-form" id="statusForm">
+                <div>
+                    <label for="statusNoHp">Nomor HP</label>
+                    <input type="text" id="statusNoHp" name="no_hp" placeholder="081234567890" required>
+                </div>
+                <div>
+                    <label for="statusKode">Nama Pelanggan</label>
+                    <input type="text" id="statusKode" name="nama_pelanggan" placeholder="Masukkan nama Anda" required>
+                </div>
+                <button type="submit" class="status-submit">
+                    <i class="fas fa-magnifying-glass"></i> Cek
+                </button>
+            </form>
+
+            <div class="status-results" id="statusResults">
+                <div class="status-empty">Status pesanan akan tampil di sini.</div>
+            </div>
         </div>
     </div>
 
@@ -949,6 +1203,7 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         // Category Filter
         document.querySelectorAll('.cat-tab').forEach(tab => {
@@ -990,7 +1245,14 @@
         const orderMenuPlaceholder = document.getElementById('orderMenuPlaceholder');
         const jumlahInput = document.getElementById('jumlah');
         const orderTotal = document.getElementById('orderTotal');
+        const deliveryLatitude = document.getElementById('deliveryLatitude');
+        const deliveryLongitude = document.getElementById('deliveryLongitude');
+        const deliveryLocationText = document.getElementById('deliveryLocationText');
+        const useCurrentLocation = document.getElementById('useCurrentLocation');
+        const defaultDeliveryLocation = [-6.2, 106.816666];
         let activeMenuPrice = 0;
+        let deliveryMap = null;
+        let deliveryMarker = null;
 
         const formatRupiah = (value) => {
             return new Intl.NumberFormat('id-ID', {
@@ -1005,6 +1267,63 @@
             const max = parseInt(jumlahInput.max || '1', 10);
             jumlahInput.value = Math.min(jumlah, max);
             orderTotal.textContent = formatRupiah(activeMenuPrice * parseInt(jumlahInput.value, 10));
+        };
+
+        const updateDeliveryLocation = (lat, lng, shouldCenter = true) => {
+            const fixedLat = Number(lat).toFixed(7);
+            const fixedLng = Number(lng).toFixed(7);
+
+            deliveryLatitude.value = fixedLat;
+            deliveryLongitude.value = fixedLng;
+            deliveryLocationText.textContent = `Titik dipilih: ${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`;
+
+            if (!deliveryMap || !deliveryMarker) {
+                return;
+            }
+
+            deliveryMarker.setLatLng([lat, lng]);
+
+            if (shouldCenter) {
+                deliveryMap.setView([lat, lng], 16);
+            }
+        };
+
+        const initDeliveryMap = () => {
+            if (!window.L) {
+                deliveryLocationText.textContent = 'Map belum tersedia. Alamat tetap bisa dikirim.';
+                return;
+            }
+
+            if (!deliveryMap) {
+                const initialLocation = deliveryLatitude.value && deliveryLongitude.value
+                    ? [Number(deliveryLatitude.value), Number(deliveryLongitude.value)]
+                    : defaultDeliveryLocation;
+
+                deliveryMap = L.map('deliveryMap', {
+                    zoomControl: true,
+                    attributionControl: false
+                }).setView(initialLocation, 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19
+                }).addTo(deliveryMap);
+
+                deliveryMarker = L.marker(initialLocation, { draggable: true }).addTo(deliveryMap);
+                deliveryMarker.on('dragend', function(event) {
+                    const markerLocation = event.target.getLatLng();
+                    updateDeliveryLocation(markerLocation.lat, markerLocation.lng, false);
+                });
+
+                deliveryMap.on('click', function(event) {
+                    updateDeliveryLocation(event.latlng.lat, event.latlng.lng);
+                });
+
+                if (deliveryLatitude.value && deliveryLongitude.value) {
+                    updateDeliveryLocation(deliveryLatitude.value, deliveryLongitude.value);
+                }
+            }
+
+            setTimeout(() => deliveryMap.invalidateSize(), 150);
         };
 
         const openOrderModal = (card) => {
@@ -1033,6 +1352,7 @@
             orderModal.classList.add('active');
             orderModal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            initDeliveryMap();
             document.getElementById('nama_pelanggan').focus();
         };
 
@@ -1059,9 +1379,123 @@
 
         jumlahInput.addEventListener('input', updateOrderTotal);
 
+        useCurrentLocation.addEventListener('click', function() {
+            if (!navigator.geolocation) {
+                deliveryLocationText.textContent = 'Browser tidak mendukung lokasi otomatis.';
+                return;
+            }
+
+            deliveryLocationText.textContent = 'Mengambil lokasi Anda...';
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    updateDeliveryLocation(position.coords.latitude, position.coords.longitude);
+                },
+                function() {
+                    deliveryLocationText.textContent = 'Lokasi otomatis gagal. Pilih titik dari map.';
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        });
+
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape' && orderModal.classList.contains('active')) {
                 closeOrderModal();
+            }
+        });
+
+        // Status Pesanan
+        const statusModal = document.getElementById('statusModal');
+        const openStatusModal = document.getElementById('openStatusModal');
+        const statusForm = document.getElementById('statusForm');
+        const statusResults = document.getElementById('statusResults');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const openCustomerStatusModal = () => {
+            statusModal.classList.add('active');
+            statusModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('statusNoHp').focus();
+        };
+
+        const closeCustomerStatusModal = () => {
+            statusModal.classList.remove('active');
+            statusModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        const escapeHtml = (value) => {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[char]));
+        };
+
+        const renderStatusOrders = (orders) => {
+            if (!orders.length) {
+                statusResults.innerHTML = '<div class="status-empty">Pesanan tidak ditemukan untuk nomor tersebut.</div>';
+                return;
+            }
+
+            statusResults.innerHTML = orders.map(order => {
+                const items = order.items.map(item => `${escapeHtml(item.nama || 'Menu')} x${escapeHtml(item.jumlah)}`).join(', ');
+                const address = order.alamat ? `<p><strong>Alamat:</strong> ${escapeHtml(order.alamat)}</p>` : '';
+
+                return `
+                    <div class="status-card">
+                        <div class="status-card-head">
+                            <span class="status-code">${escapeHtml(order.kode)}</span>
+                            <span class="status-badge ${escapeHtml(order.status)}">${escapeHtml(order.status_label)}</span>
+                        </div>
+                        <p><strong>Tanggal:</strong> ${escapeHtml(order.tanggal || '-')}</p>
+                        <p><strong>Pesanan:</strong> ${items || '-'}</p>
+                        <p><strong>Total:</strong> ${escapeHtml(order.total)}</p>
+                        ${address}
+                    </div>
+                `;
+            }).join('');
+        };
+
+        openStatusModal.addEventListener('click', openCustomerStatusModal);
+
+        document.querySelectorAll('[data-close-status]').forEach(element => {
+            element.addEventListener('click', closeCustomerStatusModal);
+        });
+
+        statusForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            statusResults.innerHTML = '<div class="status-empty">Mencari pesanan...</div>';
+
+            try {
+                const response = await fetch('{{ route('pesanan.status') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        no_hp: document.getElementById('statusNoHp').value,
+                        kode_pesanan: document.getElementById('statusKode').value
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal mencari pesanan');
+                }
+
+                const data = await response.json();
+                renderStatusOrders(data.orders || []);
+            } catch (error) {
+                statusResults.innerHTML = '<div class="status-empty">Status belum bisa dimuat. Coba beberapa saat lagi.</div>';
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && statusModal.classList.contains('active')) {
+                closeCustomerStatusModal();
             }
         });
     </script>

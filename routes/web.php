@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\KontakController;
 // Landing Page
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 Route::post('/pesanan', [LandingController::class, 'storePesanan'])->name('pesanan.store');
+Route::post('/pesanan/status', [LandingController::class, 'statusPesanan'])->name('pesanan.status');
 Route::post('/kontak', [LandingController::class, 'storeKontak'])->name('kontak.store');
 
 // Lingkaran (existing)

@@ -21,8 +21,25 @@
             <tr><td style="color: #888; width: 140px;">Kode Pesanan</td><td style="font-weight: 600;">{{ $pesanan->kode_pesanan }}</td></tr>
             <tr><td style="color: #888;">Pelanggan</td><td>{{ $pesanan->user->name }}</td></tr>
             <tr><td style="color: #888;">Email</td><td>{{ $pesanan->user->email }}</td></tr>
+            <tr><td style="color: #888;">Nomor HP</td><td>{{ $pesanan->no_hp ?? '-' }}</td></tr>
             <tr><td style="color: #888;">Tanggal</td><td>{{ $pesanan->created_at->format('d M Y, H:i') }}</td></tr>
             <tr><td style="color: #888;">Metode Bayar</td><td>{{ $pesanan->metode_pembayaran ?? '-' }}</td></tr>
+            <tr>
+                <td style="color: #888;">Alamat</td>
+                <td style="white-space: pre-line;">{{ $pesanan->alamat_pengiriman ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td style="color: #888;">Lokasi Map</td>
+                <td>
+                    @if($pesanan->latitude && $pesanan->longitude)
+                        <a href="https://www.google.com/maps?q={{ $pesanan->latitude }},{{ $pesanan->longitude }}" target="_blank" rel="noopener" style="color: #ff6b35; font-weight: 600;">
+                            {{ $pesanan->latitude }}, {{ $pesanan->longitude }}
+                        </a>
+                    @else
+                        -
+                    @endif
+                </td>
+            </tr>
             <tr>
                 <td style="color: #888;">Status</td>
                 <td><span class="badge badge-{{ $pesanan->status }}">{{ ucfirst($pesanan->status) }}</span></td>

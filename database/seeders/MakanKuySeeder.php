@@ -168,6 +168,10 @@ class MakanKuySeeder extends Seeder
             'total_harga' => 125000,
             'status' => 'menunggu',
             'metode_pembayaran' => 'E-Wallet',
+            'no_hp' => '081234567890',
+            'alamat_pengiriman' => 'Jl. Sudirman No. 12, Jakarta Pusat',
+            'latitude' => -6.2087634,
+            'longitude' => 106.8455990,
             'created_at' => '2023-10-25 14:30:00',
         ]);
 
@@ -191,6 +195,10 @@ class MakanKuySeeder extends Seeder
             'total_harga' => 85000,
             'status' => 'diproses',
             'metode_pembayaran' => 'Transfer',
+            'no_hp' => '081298765432',
+            'alamat_pengiriman' => 'Jl. Asia Afrika No. 8, Bandung',
+            'latitude' => -6.9215529,
+            'longitude' => 107.6069057,
             'created_at' => '2023-10-25 14:15:00',
         ]);
 
@@ -214,6 +222,10 @@ class MakanKuySeeder extends Seeder
             'total_harga' => 210000,
             'status' => 'selesai',
             'metode_pembayaran' => 'Cash',
+            'no_hp' => '082112345678',
+            'alamat_pengiriman' => 'Jl. Malioboro No. 21, Yogyakarta',
+            'latitude' => -7.7926306,
+            'longitude' => 110.3658443,
             'created_at' => '2023-10-25 13:45:00',
         ]);
 
@@ -237,6 +249,10 @@ class MakanKuySeeder extends Seeder
             'total_harga' => 45000,
             'status' => 'dibatalkan',
             'metode_pembayaran' => 'E-Wallet',
+            'no_hp' => '082198765432',
+            'alamat_pengiriman' => 'Jl. Pemuda No. 5, Surabaya',
+            'latitude' => -7.2574719,
+            'longitude' => 112.7520883,
             'created_at' => '2023-10-25 12:20:00',
         ]);
 
