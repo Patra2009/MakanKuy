@@ -1,58 +1,174 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MakanKuy
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+MakanKuy adalah aplikasi pemesanan makanan berbasis Laravel. Aplikasi ini memiliki landing page untuk pelanggan, form pemesanan dengan pilihan lokasi antaran melalui map, fitur cek status pesanan dari tombol keranjang, dan panel admin untuk mengelola menu, kategori, promo, kontak, pengguna, serta pesanan.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Landing page daftar menu makanan, minuman, dan cemilan.
+- Pencarian menu dan filter berdasarkan kategori.
+- Popup pemesanan langsung dari kartu menu.
+- Pemilihan lokasi antaran menggunakan map Leaflet/OpenStreetMap.
+- Penyimpanan alamat, nomor HP, latitude, dan longitude pembeli.
+- Cek status pesanan pelanggan melalui tombol keranjang di dekat kolom pencarian.
+- Panel admin untuk memantau dan mengubah status pesanan.
+- Seeder data demo untuk menu, promo, user, dan pesanan.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.3+
+- Laravel 13
+- MySQL/MariaDB atau database lain yang didukung Laravel
+- Composer
+- Node.js dan npm
+- Leaflet + OpenStreetMap untuk map di halaman pemesanan
 
-## Learning Laravel
+## Cara Menjalankan Project
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Clone repository:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/username/nama-repo.git
+cd nama-repo
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install dependency PHP:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install dependency frontend:
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Buat file environment:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Untuk Windows PowerShell, jika perintah `cp` tidak tersedia:
 
-## License
+```powershell
+Copy-Item .env.example .env
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Generate application key:
+
+```bash
+php artisan key:generate
+```
+
+Atur database di file `.env`, contoh MySQL:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=makankuy
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Buat database sesuai nama `DB_DATABASE`, lalu jalankan migrasi dan seeder:
+
+```bash
+php artisan migrate --seed
+```
+
+Buat symbolic link storage:
+
+```bash
+php artisan storage:link
+```
+
+Build asset frontend:
+
+```bash
+npm run build
+```
+
+Jalankan server lokal:
+
+```bash
+php artisan serve
+```
+
+Buka aplikasi di browser:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Akun Demo
+
+Seeder membuat akun admin berikut:
+
+```text
+Email: admin@makankuy.com
+Password: password
+```
+
+Panel admin dapat dibuka dari tombol admin di navbar landing page atau melalui:
+
+```text
+http://127.0.0.1:8000/admin
+```
+
+## Cara Mencoba Fitur Pesanan
+
+1. Buka landing page.
+2. Pilih salah satu menu, lalu klik tombol tambah atau kartu menu.
+3. Isi nama, nomor HP, alamat pengiriman, jumlah, dan metode pembayaran.
+4. Pada bagian `Lokasi Antaran`, klik titik di map atau gunakan tombol `Lokasi Saya`.
+5. Klik `Buat Pesanan`.
+6. Buka panel admin untuk melihat detail pesanan, termasuk link lokasi map.
+
+Untuk cek status pesanan sebagai pelanggan:
+
+1. Klik tombol keranjang di samping kolom pencarian.
+2. Masukkan nomor HP yang digunakan saat memesan.
+3. Opsional: masukkan kode pesanan seperti `ORD-001`.
+4. Klik `Cek`.
+
+## Catatan Map
+
+Map menggunakan Leaflet dan tile dari OpenStreetMap melalui CDN. Jika map tidak muncul, pastikan perangkat terhubung ke internet dan browser tidak memblokir akses ke CDN.
+
+Fitur `Lokasi Saya` menggunakan geolocation browser. Browser biasanya meminta izin lokasi terlebih dahulu, dan fitur ini bekerja paling baik saat aplikasi dibuka melalui `localhost` atau domain HTTPS.
+
+## Perintah Berguna
+
+Menjalankan migrasi ulang dengan data demo:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Menjalankan mode development Vite:
+
+```bash
+npm run dev
+```
+
+Menjalankan test:
+
+```bash
+php artisan test
+```
+
+## Struktur Penting
+
+- `routes/web.php` - routing landing page, pesanan, kontak, dan admin.
+- `app/Http/Controllers/LandingController.php` - proses landing page, pemesanan, kontak, dan cek status pesanan.
+- `app/Http/Controllers/Admin` - controller panel admin.
+- `resources/views/landing/index.blade.php` - tampilan landing page dan popup pemesanan.
+- `resources/views/admin` - tampilan panel admin.
+- `database/migrations` - struktur tabel database.
+- `database/seeders/MakanKuySeeder.php` - data demo aplikasi.
+
+## Lisensi
+
+Project ini dibuat untuk kebutuhan pembelajaran dan pengembangan aplikasi pemesanan makanan.
